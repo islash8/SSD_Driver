@@ -9,239 +9,160 @@
 
 #include "DIO_Interface.h"
 
+#include "SSD_Interface.h"
 #include "SSD_Private.h"
 #include "SSD_Config.h"
-#include "SSD_Interface.h"
 
 
-void SSD_vInit(void)
+
+
+u8 SSD_Au8INIT_FLAG[SSD_NO_OF_SSDs] =  {SSD_u8_SSD_INIT_FLAG_ZERO, SSD_u8_SSD_INIT_FLAG_ZERO};
+u8 SSD_u8LastDigit[SSD_NO_OF_SSDs]  =  {SSD_u8_SSD_LAST_DIG_INIT_VAL, SSD_u8_SSD_LAST_DIG_INIT_VAL};
+u8 SSD_u8OffFlag[SSD_NO_OF_SSDs]    =  {SSD_u8_SSD_SET_OFF_FLAG_OFF, SSD_u8_SSD_SET_OFF_FLAG_OFF};
+
+
+/*
+ * Description: Function to set pins of a SSD to display a certain digit on it
+ * Inputs: the SSD number according to the number of SSD specified in the configuration file
+ * 		   and the digit needed to be displayed
+ * output: the Error state of the function
+*/
+
+
+u8 SSD_u8SetValue(u8 copy_SSD_ModuleNum, u8 copy_SSD_ModuleValue)
 {
 
-	u8 local_u8SSD_NumberCounter = 0;
-	u8 local_u8SSD_PinsCounter = 0;
 
+	/*Local Variable holding the error state*/
+	u8 Local_u8Error;
 
-	while(local_u8SSD_NumberCounter < SSD_NO_OF_SSDs)
+	if ((copy_SSD_ModuleNum >= SSD_NO_OF_SSDs) || (copy_SSD_ModuleValue > SSD_MAX_DIGIT_FOR_SSD))
 	{
-		// initalize direction
-
-		for(local_u8SSD_PinsCounter = 0; local_u8SSD_PinsCounter < SSD_NUMBER_OF_SEGMENTS;  local_u8SSD_PinsCounter++)
+		Local_u8Error = STD_ERROR_NOK;
+	}
+	else
+	{
+		if (SSD_u8OffFlag[copy_SSD_ModuleNum] == SSD_u8_SSD_SET_OFF_FLAG_OFF)
 		{
-			DIO_u8SetPinDirection(SSD_Au8Segments[local_u8SSD_NumberCounter][local_u8SSD_PinsCounter], DIO_PIN_OUTPUT);
-		}
+			SSD_Au8INIT_FLAG[copy_SSD_ModuleNum] = SSD_u8_SSD_INIT_FLAG_ONE;
+			SSD_u8LastDigit[copy_SSD_ModuleNum] = copy_SSD_ModuleValue;
 
-		for(local_u8SSD_PinsCounter = 0; local_u8SSD_PinsCounter < SSD_NO_OF_SSDs;  local_u8SSD_PinsCounter++)
-		{
-			DIO_u8SetPinDirection(SSD_Au8ModuleEnable[local_u8SSD_NumberCounter], DIO_PIN_OUTPUT);
-		}
-		// initalize value
-
-		if(SSD_Au8ModuleType[local_u8SSD_NumberCounter ] == SSD_COMMON_CATHODE)
-		{
-			switch(SSD_Au8ModuleInitValue[local_u8SSD_NumberCounter])
+			/*Checking whether the passed SSD number is related to Common Cathode SSD*/
+			if (SSD_Au8ModuleType[copy_SSD_ModuleNum] == SSD_COMMON_CATHODE)
 			{
-
-			case SSD_u8_NUMBER_ZERO:
-
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTA], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTB], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTC], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTD], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTE], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTF], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTG], DIO_PIN_LOW);
-				break;
-			case SSD_u8_NUMBER_ONE:
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTA], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTB], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTC], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTD], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTE], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTF], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTG], DIO_PIN_LOW);
-				break;
-			case SSD_u8_NUMBER_TWO:
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTA], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTB], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTC], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTD], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTE], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTF], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTG], DIO_PIN_HIGH);
-				break;
-			case SSD_u8_NUMBER_THREE:
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTA], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTB], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTC], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTD], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTE], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTF], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTG], DIO_PIN_HIGH);
-				break;
-			case SSD_u8_NUMBER_FOUR:
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTA], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTB], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTC], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTD], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTE], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTF], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTG], DIO_PIN_HIGH);
-				break;
-			case SSD_u8_NUMBER_FIVE:
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTA], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTB], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTC], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTD], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTE], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTF], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTG], DIO_PIN_HIGH);
-				break;
-			case SSD_u8_NUMBER_SIX:
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTA], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTB], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTC], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTD], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTE], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTF], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTG], DIO_PIN_HIGH);
-				break;
-			case SSD_u8_NUMBER_SEVEN:
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTA], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTB], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTC], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTD], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTE], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTF], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTG], DIO_PIN_LOW);
-				break;
-			case SSD_u8_NUMBER_EIGHT:
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTA], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTB], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTC], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTD], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTE], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTF], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTG], DIO_PIN_HIGH);
-				break;
-			case SSD_u8_NUMBER_NINE:
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTA], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTB], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTC], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTD], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTE], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTF], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTG], DIO_PIN_HIGH);
-				break;
+				  /*handling the enable pin according to the cathode SSD */
+				  Local_u8Error = DIO_u8SetPinValue(SSD_Au8ModuleEnable[copy_SSD_ModuleNum],DIO_PIN_LOW);
+				  for (u8 i = SSD_u8_INIT_ITER ; i < SSD_NUMBER_OF_SEGMENTS; i++)
+				  {
+					  Local_u8Error = DIO_u8SetPinValue(SSD_Au8Segments[copy_SSD_ModuleNum][i],SSD_Au8SEG_PATTERN_CATHODE[copy_SSD_ModuleValue][i]);
+				  }
+			}
+			else
+			{
+				  /*handling the enable pin according to the anode SSD */
+				  DIO_u8SetPinValue(SSD_Au8ModuleEnable[copy_SSD_ModuleNum],DIO_PIN_HIGH);
+				  for (u8 i = SSD_u8_INIT_ITER ; i < SSD_NUMBER_OF_SEGMENTS; i++)
+				  {
+					  Local_u8Error = DIO_u8SetPinValue(SSD_Au8Segments[copy_SSD_ModuleNum][i],SSD_Au8SEG_PATTERN_ANODE[copy_SSD_ModuleValue][i]);
+				  }
 			}
 		}
 		else
+			Local_u8Error = STD_ERROR_OK;
+	}
+	/*Function return*/
+	return Local_u8Error;
+}
+
+
+u8 SSD_u8SetOn(u8 copy_u8SSDNum)
+{
+	/*Local Variable holding the error state*/
+		u8 Local_u8Error;
+
+		SSD_u8OffFlag[SSD_NO_OF_SSDs] = SSD_u8_SSD_SET_OFF_FLAG_OFF;
+
+		if (copy_u8SSDNum >= SSD_NO_OF_SSDs)
 		{
-			switch(SSD_Au8ModuleInitValue[local_u8SSD_NumberCounter])
+			Local_u8Error = STD_ERROR_NOK;
+		}
+		else
+		{
+			/*Checking whether the passed SSD number is related to Common Cathode SSD*/
+			if (SSD_Au8ModuleType[copy_u8SSDNum] == SSD_COMMON_CATHODE)
 			{
-
-			case SSD_u8_NUMBER_ZERO:
-
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTA], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTB], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTC], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTD], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTE], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTF], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTG], DIO_PIN_HIGH);
-				break;
-			case SSD_u8_NUMBER_ONE:
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTA], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTB], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTC], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTD], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTE], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTF], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTG], DIO_PIN_HIGH);
-				break;
-			case SSD_u8_NUMBER_TWO:
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTA], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTB], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTC], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTD], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTE], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTF], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTG], DIO_PIN_LOW);
-				break;
-			case SSD_u8_NUMBER_THREE:
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTA], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTB], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTC], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTD], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTE], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTF], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTG], DIO_PIN_LOW);
-				break;
-			case SSD_u8_NUMBER_FOUR:
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTA], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTB], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTC], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTD], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTE], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTF], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTG], DIO_PIN_LOW);
-				break;
-			case SSD_u8_NUMBER_FIVE:
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTA], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTB], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTC], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTD], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTE], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTF], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTG], DIO_PIN_LOW);
-				break;
-			case SSD_u8_NUMBER_SIX:
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTA], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTB], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTC], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTD], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTE], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTF], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTG], DIO_PIN_LOW);
-				break;
-			case SSD_u8_NUMBER_SEVEN:
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTA], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTB], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTC], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTD], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTE], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTF], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTG], DIO_PIN_HIGH);
-				break;
-			case SSD_u8_NUMBER_EIGHT:
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTA], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTB], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTC], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTD], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTE], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTF], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTG], DIO_PIN_LOW);
-				break;
-			case SSD_u8_NUMBER_NINE:
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTA], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTB], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTC], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTD], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTE], DIO_PIN_HIGH);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTF], DIO_PIN_LOW);
-				DIO_u8SetPinValue(SSD_Au8Segments[local_u8SSD_NumberCounter][SSD_SEGMENTG], DIO_PIN_LOW);
-				break;
+				if (SSD_Au8INIT_FLAG[copy_u8SSDNum] == SSD_u8_SSD_INIT_FLAG_ZERO)
+				{
+				  /*handling the enable pin according to the cathode SSD */
+				  Local_u8Error = DIO_u8SetPinValue(SSD_Au8ModuleEnable[copy_u8SSDNum],DIO_PIN_LOW);
+				  for (u8 i = SSD_u8_INIT_ITER ; i < SSD_NUMBER_OF_SEGMENTS; i++)
+				  {
+					  Local_u8Error = DIO_u8SetPinValue(SSD_Au8Segments[copy_u8SSDNum][i],SSD_Au8SEG_PATTERN_CATHODE[SSD_Au8ModuleInitValue[copy_u8SSDNum]][i]);
+				  }
+				}
+				else
+				{
+				  /*handling the enable pin according to the cathode SSD */
+					Local_u8Error = DIO_u8SetPinValue(SSD_Au8ModuleEnable[copy_u8SSDNum],DIO_PIN_LOW);
+				  for (u8 i = SSD_u8_INIT_ITER ; i < SSD_NUMBER_OF_SEGMENTS; i++)
+				  {
+					  Local_u8Error = DIO_u8SetPinValue(SSD_Au8Segments[copy_u8SSDNum][i],SSD_Au8SEG_PATTERN_CATHODE[SSD_u8LastDigit[copy_u8SSDNum]][i]);
+				  }
+				}
+			}
+			else
+			{	/*If the SSD is Common anode*/
+				if (SSD_Au8INIT_FLAG[copy_u8SSDNum] == SSD_u8_SSD_INIT_FLAG_ZERO)
+				{
+				  /*handling the enable pin according to the anode SSD */
+				  DIO_u8SetPinValue(SSD_Au8ModuleEnable[copy_u8SSDNum],DIO_PIN_HIGH);
+				  for (u8 i = SSD_u8_INIT_ITER ; i < SSD_NUMBER_OF_SEGMENTS; i++)
+				  {
+					  Local_u8Error = DIO_u8SetPinValue(SSD_Au8Segments[copy_u8SSDNum][i],SSD_Au8SEG_PATTERN_ANODE[SSD_Au8ModuleInitValue[copy_u8SSDNum]][i]);
+				  }
+				}
+				else
+				{
+				  /*handling the enable pin according to the anode SSD */
+				  DIO_u8SetPinValue(SSD_Au8ModuleEnable[copy_u8SSDNum],DIO_PIN_HIGH);
+				  for (u8 i = SSD_u8_INIT_ITER ; i < SSD_NUMBER_OF_SEGMENTS; i++)
+				  {
+					  Local_u8Error = DIO_u8SetPinValue(SSD_Au8Segments[copy_u8SSDNum][i],SSD_Au8SEG_PATTERN_ANODE[SSD_u8LastDigit[copy_u8SSDNum]][i]);
+				  }
+				}
 			}
 		}
-
-		switch(SSD_Au8ModuleType[local_u8SSD_NumberCounter ])
-		{
-		case 0:
-			DIO_u8SetPinValue(SSD_Au8ModuleEnable[local_u8SSD_NumberCounter], DIO_PIN_LOW);
-			break;
-		case SSD_COMMON_ANODE:
-			DIO_u8SetPinValue(SSD_Au8ModuleEnable[local_u8SSD_NumberCounter], DIO_PIN_HIGH);
-			break;
-		}
-		local_u8SSD_NumberCounter++;
-	}
+		/*Function return*/
+		return Local_u8Error;
 }
+
+
+u8 SSD_u8_SetOff (u8 Copy_u8SsdNb)
+{
+	/*Local Variable holding the error state*/
+	u8 Local_u8Error;
+	SSD_u8OffFlag[SSD_NO_OF_SSDs] = SSD_u8_SSD_SET_OFF_FLAG_ON;
+
+	if (Copy_u8SsdNb >= SSD_NO_OF_SSDs)
+	{
+		Local_u8Error = STD_ERROR_NOK;
+	}
+	else
+	{
+		/*Checking whether the passed SSD number is related to Common Cathode SSD*/
+		if (SSD_Au8ModuleType[Copy_u8SsdNb] == SSD_COMMON_CATHODE)
+		{
+			  /*handling the enable pin according to the cathode SSD */
+			  Local_u8Error = DIO_u8SetPinValue(SSD_Au8ModuleEnable[Copy_u8SsdNb],DIO_PIN_HIGH);
+		}
+		else
+		{
+			  /*handling the enable pin according to the anode SSD */
+			  Local_u8Error = DIO_u8SetPinValue(SSD_Au8ModuleEnable[Copy_u8SsdNb],DIO_PIN_LOW);
+		}
+	}
+	/*Function return*/
+	return Local_u8Error;
+}
+
+

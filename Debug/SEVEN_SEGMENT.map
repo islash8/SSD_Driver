@@ -2,10 +2,10 @@ Archive member included to satisfy reference by file (symbol)
 
 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
                               /usr/lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o (exit)
-/usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_tablejump2.o)
-                              ./SSD_Prog.o (__tablejump2__)
 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_copy_data.o)
                               ./DIO_Prog.o (__do_copy_data)
+/usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_clear_bss.o)
+                              ./SSD_Prog.o (__do_clear_bss)
 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_umulhisi3.o)
                               ./Lib_Delay.o (__umulhisi3)
 
@@ -132,7 +132,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x0000000000000000     0x200a
+.text           0x0000000000000000      0xe22
  *(.vectors)
  .vectors       0x0000000000000000       0x54 /usr/lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o
                 0x0000000000000000                __vectors
@@ -173,6 +173,8 @@ END GROUP
  *(.init4)
  .init4         0x0000000000000060       0x16 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_copy_data.o)
                 0x0000000000000060                __do_copy_data
+ .init4         0x0000000000000076       0x10 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_clear_bss.o)
+                0x0000000000000076                __do_clear_bss
  *(.init4)
  *(.init5)
  *(.init5)
@@ -183,132 +185,137 @@ END GROUP
  *(.init8)
  *(.init8)
  *(.init9)
- .init9         0x0000000000000076        0x8 /usr/lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o
+ .init9         0x0000000000000086        0x8 /usr/lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o
  *(.init9)
  *(.text)
- .text          0x000000000000007e        0x4 /usr/lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o
-                0x000000000000007e                __vector_1
-                0x000000000000007e                __vector_12
-                0x000000000000007e                __bad_interrupt
-                0x000000000000007e                __vector_6
-                0x000000000000007e                __vector_3
-                0x000000000000007e                __vector_11
-                0x000000000000007e                __vector_13
-                0x000000000000007e                __vector_17
-                0x000000000000007e                __vector_19
-                0x000000000000007e                __vector_7
-                0x000000000000007e                __vector_5
-                0x000000000000007e                __vector_4
-                0x000000000000007e                __vector_9
-                0x000000000000007e                __vector_2
-                0x000000000000007e                __vector_15
-                0x000000000000007e                __vector_8
-                0x000000000000007e                __vector_14
-                0x000000000000007e                __vector_10
-                0x000000000000007e                __vector_16
-                0x000000000000007e                __vector_18
-                0x000000000000007e                __vector_20
- .text          0x0000000000000082        0x0 ./DIO_Prog.o
- .text          0x0000000000000082        0x0 ./Lib_Delay.o
- .text          0x0000000000000082        0x0 ./SSD_Prog.o
- .text          0x0000000000000082        0x0 ./main.o
- .text          0x0000000000000082        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
- .text          0x0000000000000082        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_tablejump2.o)
- .text          0x0000000000000082        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_copy_data.o)
- .text          0x0000000000000082        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_umulhisi3.o)
-                0x0000000000000082                . = ALIGN (0x2)
+ .text          0x000000000000008e        0x4 /usr/lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o
+                0x000000000000008e                __vector_1
+                0x000000000000008e                __vector_12
+                0x000000000000008e                __bad_interrupt
+                0x000000000000008e                __vector_6
+                0x000000000000008e                __vector_3
+                0x000000000000008e                __vector_11
+                0x000000000000008e                __vector_13
+                0x000000000000008e                __vector_17
+                0x000000000000008e                __vector_19
+                0x000000000000008e                __vector_7
+                0x000000000000008e                __vector_5
+                0x000000000000008e                __vector_4
+                0x000000000000008e                __vector_9
+                0x000000000000008e                __vector_2
+                0x000000000000008e                __vector_15
+                0x000000000000008e                __vector_8
+                0x000000000000008e                __vector_14
+                0x000000000000008e                __vector_10
+                0x000000000000008e                __vector_16
+                0x000000000000008e                __vector_18
+                0x000000000000008e                __vector_20
+ .text          0x0000000000000092        0x0 ./DIO_Prog.o
+ .text          0x0000000000000092        0x0 ./Lib_Delay.o
+ .text          0x0000000000000092        0x0 ./SSD_Prog.o
+ .text          0x0000000000000092        0x0 ./main.o
+ .text          0x0000000000000092        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
+ .text          0x0000000000000092        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_copy_data.o)
+ .text          0x0000000000000092        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_clear_bss.o)
+ .text          0x0000000000000092        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_umulhisi3.o)
+                0x0000000000000092                . = ALIGN (0x2)
  *(.text.*)
  .text.DIO_vInit
-                0x0000000000000082       0x74 ./DIO_Prog.o
-                0x0000000000000082                DIO_vInit
+                0x0000000000000092       0x74 ./DIO_Prog.o
+                0x0000000000000092                DIO_vInit
  .text.DIO_u8SetPinDirection
-                0x00000000000000f6      0x1e8 ./DIO_Prog.o
-                0x00000000000000f6                DIO_u8SetPinDirection
+                0x0000000000000106      0x1e8 ./DIO_Prog.o
+                0x0000000000000106                DIO_u8SetPinDirection
  .text.DIO_u8SetPinValue
-                0x00000000000002de      0x1e6 ./DIO_Prog.o
-                0x00000000000002de                DIO_u8SetPinValue
+                0x00000000000002ee      0x1e6 ./DIO_Prog.o
+                0x00000000000002ee                DIO_u8SetPinValue
  .text.DIO_u8ReadPinValue
-                0x00000000000004c4       0xf0 ./DIO_Prog.o
-                0x00000000000004c4                DIO_u8ReadPinValue
+                0x00000000000004d4       0xf0 ./DIO_Prog.o
+                0x00000000000004d4                DIO_u8ReadPinValue
  .text.DIO_u8SetPortDirection
-                0x00000000000005b4       0xde ./DIO_Prog.o
-                0x00000000000005b4                DIO_u8SetPortDirection
+                0x00000000000005c4       0xde ./DIO_Prog.o
+                0x00000000000005c4                DIO_u8SetPortDirection
  .text.DIO_u8SetPortValue
-                0x0000000000000692      0x130 ./DIO_Prog.o
-                0x0000000000000692                DIO_u8SetPortValue
+                0x00000000000006a2      0x130 ./DIO_Prog.o
+                0x00000000000006a2                DIO_u8SetPortValue
  .text.DIO_u8ReadPortValue
-                0x00000000000007c2       0x9a ./DIO_Prog.o
-                0x00000000000007c2                DIO_u8ReadPortValue
+                0x00000000000007d2       0x9a ./DIO_Prog.o
+                0x00000000000007d2                DIO_u8ReadPortValue
  .text.Lib_vDelayMs
-                0x000000000000085c       0xa2 ./Lib_Delay.o
-                0x000000000000085c                Lib_vDelayMs
+                0x000000000000086c       0xa2 ./Lib_Delay.o
+                0x000000000000086c                Lib_vDelayMs
  .text.Lib_vDelayUs
-                0x00000000000008fe       0x56 ./Lib_Delay.o
-                0x00000000000008fe                Lib_vDelayUs
- .text.SSD_vInit
-                0x0000000000000954     0x164c ./SSD_Prog.o
-                0x0000000000000954                SSD_vInit
- .text.main     0x0000000000001fa0       0x14 ./main.o
-                0x0000000000001fa0                main
+                0x000000000000090e       0x56 ./Lib_Delay.o
+                0x000000000000090e                Lib_vDelayUs
+ .text.SSD_u8SetValue
+                0x0000000000000964      0x182 ./SSD_Prog.o
+                0x0000000000000964                SSD_u8SetValue
+ .text.SSD_u8SetOn
+                0x0000000000000ae6      0x2a0 ./SSD_Prog.o
+                0x0000000000000ae6                SSD_u8SetOn
+ .text.SSD_u8_SetOff
+                0x0000000000000d86       0x68 ./SSD_Prog.o
+                0x0000000000000d86                SSD_u8_SetOff
+ .text.main     0x0000000000000dee       0x12 ./main.o
+                0x0000000000000dee                main
  .text.libgcc.mul
-                0x0000000000001fb4        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
+                0x0000000000000e00        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
  .text.libgcc.div
-                0x0000000000001fb4        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
- .text.libgcc   0x0000000000001fb4        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
+                0x0000000000000e00        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
+ .text.libgcc   0x0000000000000e00        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
  .text.libgcc.prologue
-                0x0000000000001fb4        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
+                0x0000000000000e00        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
  .text.libgcc.builtins
-                0x0000000000001fb4        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
+                0x0000000000000e00        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
  .text.libgcc.fmul
-                0x0000000000001fb4        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
+                0x0000000000000e00        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
  .text.libgcc.fixed
-                0x0000000000001fb4        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
+                0x0000000000000e00        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
  .text.libgcc.mul
-                0x0000000000001fb4        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_tablejump2.o)
+                0x0000000000000e00        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_copy_data.o)
  .text.libgcc.div
-                0x0000000000001fb4        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_tablejump2.o)
- .text.libgcc   0x0000000000001fb4        0xc /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_tablejump2.o)
-                0x0000000000001fb4                __tablejump2__
+                0x0000000000000e00        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_copy_data.o)
+ .text.libgcc   0x0000000000000e00        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_copy_data.o)
  .text.libgcc.prologue
-                0x0000000000001fc0        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_tablejump2.o)
+                0x0000000000000e00        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_copy_data.o)
  .text.libgcc.builtins
-                0x0000000000001fc0        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_tablejump2.o)
+                0x0000000000000e00        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_copy_data.o)
  .text.libgcc.fmul
-                0x0000000000001fc0        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_tablejump2.o)
+                0x0000000000000e00        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_copy_data.o)
  .text.libgcc.fixed
-                0x0000000000001fc0        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_tablejump2.o)
+                0x0000000000000e00        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_copy_data.o)
  .text.libgcc.mul
-                0x0000000000001fc0        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_copy_data.o)
+                0x0000000000000e00        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_clear_bss.o)
  .text.libgcc.div
-                0x0000000000001fc0        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_copy_data.o)
- .text.libgcc   0x0000000000001fc0        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_copy_data.o)
+                0x0000000000000e00        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_clear_bss.o)
+ .text.libgcc   0x0000000000000e00        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_clear_bss.o)
  .text.libgcc.prologue
-                0x0000000000001fc0        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_copy_data.o)
+                0x0000000000000e00        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_clear_bss.o)
  .text.libgcc.builtins
-                0x0000000000001fc0        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_copy_data.o)
+                0x0000000000000e00        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_clear_bss.o)
  .text.libgcc.fmul
-                0x0000000000001fc0        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_copy_data.o)
+                0x0000000000000e00        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_clear_bss.o)
  .text.libgcc.fixed
-                0x0000000000001fc0        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_copy_data.o)
+                0x0000000000000e00        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_clear_bss.o)
  .text.libgcc.mul
-                0x0000000000001fc0       0x1e /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_umulhisi3.o)
-                0x0000000000001fc0                __umulhisi3
+                0x0000000000000e00       0x1e /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_umulhisi3.o)
+                0x0000000000000e00                __umulhisi3
  .text.libgcc.div
-                0x0000000000001fde        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_umulhisi3.o)
- .text.libgcc   0x0000000000001fde        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_umulhisi3.o)
+                0x0000000000000e1e        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_umulhisi3.o)
+ .text.libgcc   0x0000000000000e1e        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_umulhisi3.o)
  .text.libgcc.prologue
-                0x0000000000001fde        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_umulhisi3.o)
+                0x0000000000000e1e        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_umulhisi3.o)
  .text.libgcc.builtins
-                0x0000000000001fde        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_umulhisi3.o)
+                0x0000000000000e1e        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_umulhisi3.o)
  .text.libgcc.fmul
-                0x0000000000001fde        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_umulhisi3.o)
+                0x0000000000000e1e        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_umulhisi3.o)
  .text.libgcc.fixed
-                0x0000000000001fde        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_umulhisi3.o)
-                0x0000000000001fde                . = ALIGN (0x2)
+                0x0000000000000e1e        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_umulhisi3.o)
+                0x0000000000000e1e                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x0000000000001fde        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
-                0x0000000000001fde                exit
-                0x0000000000001fde                _exit
+ .fini9         0x0000000000000e1e        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
+                0x0000000000000e1e                exit
+                0x0000000000000e1e                _exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -327,19 +334,17 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x0000000000001fde        0x4 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
+ .fini0         0x0000000000000e1e        0x4 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
  *(.fini0)
  *(.hightext)
  *(.hightext*)
  *(.progmemx.*)
-                0x0000000000001fe2                . = ALIGN (0x2)
+                0x0000000000000e22                . = ALIGN (0x2)
  *(.jumptables)
  *(.jumptables*)
- .jumptables.gcc.SSD_vInit
-                0x0000000000001fe2       0x28 ./SSD_Prog.o
-                0x000000000000200a                _etext = .
+                0x0000000000000e22                _etext = .
 
-.data           0x0000000000800060       0x1c load address 0x000000000000200a
+.data           0x0000000000800060       0xa6 load address 0x0000000000000e22
                 0x0000000000800060                PROVIDE (__data_start = .)
  *(.data)
  .data          0x0000000000800060        0x0 /usr/lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o
@@ -348,55 +353,70 @@ END GROUP
  .data          0x0000000000800060        0x0 ./SSD_Prog.o
  .data          0x0000000000800060        0x0 ./main.o
  .data          0x0000000000800060        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
- .data          0x0000000000800060        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_tablejump2.o)
  .data          0x0000000000800060        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_copy_data.o)
+ .data          0x0000000000800060        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_clear_bss.o)
  .data          0x0000000000800060        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_umulhisi3.o)
  *(.data*)
+ .data.SSD_Au8SEG_PATTERN_CATHODE
+                0x0000000000800060       0x46 ./SSD_Prog.o
+                0x0000000000800060                SSD_Au8SEG_PATTERN_CATHODE
+ .data.SSD_Au8SEG_PATTERN_ANODE
+                0x00000000008000a6       0x46 ./SSD_Prog.o
+                0x00000000008000a6                SSD_Au8SEG_PATTERN_ANODE
  .data.SSD_Au8Segments
-                0x0000000000800060        0xe ./SSD_Prog.o
-                0x0000000000800060                SSD_Au8Segments
- .data.SSD_Au8ModuleType
-                0x000000000080006e        0x2 ./SSD_Prog.o
-                0x000000000080006e                SSD_Au8ModuleType
+                0x00000000008000ec        0xe ./SSD_Prog.o
+                0x00000000008000ec                SSD_Au8Segments
  .data.SSD_Au8ModuleEnable
-                0x0000000000800070        0x2 ./SSD_Prog.o
-                0x0000000000800070                SSD_Au8ModuleEnable
+                0x00000000008000fa        0x2 ./SSD_Prog.o
+                0x00000000008000fa                SSD_Au8ModuleEnable
  .data.SSD_Au8ModuleInitValue
-                0x0000000000800072        0x2 ./SSD_Prog.o
-                0x0000000000800072                SSD_Au8ModuleInitValue
+                0x00000000008000fc        0x2 ./SSD_Prog.o
+                0x00000000008000fc                SSD_Au8ModuleInitValue
  *(.gnu.linkonce.d*)
  *(.rodata)
  *(.rodata*)
  .rodata.shiftedNumber
-                0x0000000000800074        0x8 ./DIO_Prog.o
+                0x00000000008000fe        0x8 ./DIO_Prog.o
  *(.gnu.linkonce.r*)
-                0x000000000080007c                . = ALIGN (0x2)
-                0x000000000080007c                _edata = .
-                0x000000000080007c                PROVIDE (__data_end = .)
+                0x0000000000800106                . = ALIGN (0x2)
+                0x0000000000800106                _edata = .
+                0x0000000000800106                PROVIDE (__data_end = .)
 
-.bss            0x000000000080007c        0x0
-                [!provide]                        PROVIDE (__bss_start = .)
+.bss            0x0000000000800106        0x8
+                0x0000000000800106                PROVIDE (__bss_start = .)
  *(.bss)
- .bss           0x000000000080007c        0x0 /usr/lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o
- .bss           0x000000000080007c        0x0 ./DIO_Prog.o
- .bss           0x000000000080007c        0x0 ./Lib_Delay.o
- .bss           0x000000000080007c        0x0 ./SSD_Prog.o
- .bss           0x000000000080007c        0x0 ./main.o
- .bss           0x000000000080007c        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
- .bss           0x000000000080007c        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_tablejump2.o)
- .bss           0x000000000080007c        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_copy_data.o)
- .bss           0x000000000080007c        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_umulhisi3.o)
+ .bss           0x0000000000800106        0x0 /usr/lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o
+ .bss           0x0000000000800106        0x0 ./DIO_Prog.o
+ .bss           0x0000000000800106        0x0 ./Lib_Delay.o
+ .bss           0x0000000000800106        0x0 ./SSD_Prog.o
+ .bss           0x0000000000800106        0x0 ./main.o
+ .bss           0x0000000000800106        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
+ .bss           0x0000000000800106        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_copy_data.o)
+ .bss           0x0000000000800106        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_clear_bss.o)
+ .bss           0x0000000000800106        0x0 /usr/lib/gcc/avr/8.2.0/avr5/libgcc.a(_umulhisi3.o)
  *(.bss*)
+ .bss.SSD_Au8ModuleType
+                0x0000000000800106        0x2 ./SSD_Prog.o
+                0x0000000000800106                SSD_Au8ModuleType
+ .bss.SSD_Au8INIT_FLAG
+                0x0000000000800108        0x2 ./SSD_Prog.o
+                0x0000000000800108                SSD_Au8INIT_FLAG
+ .bss.SSD_u8LastDigit
+                0x000000000080010a        0x2 ./SSD_Prog.o
+                0x000000000080010a                SSD_u8LastDigit
+ .bss.SSD_u8OffFlag
+                0x000000000080010c        0x2 ./SSD_Prog.o
+                0x000000000080010c                SSD_u8OffFlag
  *(COMMON)
-                [!provide]                        PROVIDE (__bss_end = .)
-                0x000000000000200a                __data_load_start = LOADADDR (.data)
-                0x0000000000002026                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x000000000080010e                PROVIDE (__bss_end = .)
+                0x0000000000000e22                __data_load_start = LOADADDR (.data)
+                0x0000000000000ec8                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x000000000080007c        0x0
+.noinit         0x000000000080010e        0x0
                 [!provide]                        PROVIDE (__noinit_start = .)
  *(.noinit*)
                 [!provide]                        PROVIDE (__noinit_end = .)
-                0x000000000080007c                _end = .
+                0x000000000080010e                _end = .
                 [!provide]                        PROVIDE (__heap_start = .)
 
 .eeprom         0x0000000000810000        0x0
@@ -415,19 +435,19 @@ END GROUP
 .signature
  *(.signature*)
 
-.stab           0x0000000000000000     0x2478
+.stab           0x0000000000000000     0x20d0
  *(.stab)
  .stab          0x0000000000000000     0x11c4 ./DIO_Prog.o
  .stab          0x00000000000011c4      0x420 ./Lib_Delay.o
                                         0x4a4 (size before relaxing)
- .stab          0x00000000000015e4      0xbd0 ./SSD_Prog.o
-                                        0xc90 (size before relaxing)
- .stab          0x00000000000021b4      0x2c4 ./main.o
-                                        0x384 (size before relaxing)
+ .stab          0x00000000000015e4      0x834 ./SSD_Prog.o
+                                        0x8f4 (size before relaxing)
+ .stab          0x0000000000001e18      0x2b8 ./main.o
+                                        0x378 (size before relaxing)
 
-.stabstr        0x0000000000000000      0xe83
+.stabstr        0x0000000000000000      0xf8b
  *(.stabstr)
- .stabstr       0x0000000000000000      0xe83 ./DIO_Prog.o
+ .stabstr       0x0000000000000000      0xf8b ./DIO_Prog.o
 
 .stab.excl
  *(.stab.excl)
