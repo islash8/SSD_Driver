@@ -1,20 +1,42 @@
-/*
- * SSD_Private.h
- *
- *  Created on: Feb 9, 2019
- *      Author: islash8
- */
+/************************************************************************************/
+/* Author  : Islam A.                                                               */
+/* Date    : 24 FEB 2019                                                            */
+/* Version : V01                                                                    */
+/************************************************************************************/
+/* Description                                                                      */
+/* ------------                                                                     */
+/*  This header file is used to define private macros and function headers that are	*/
+/*  used in the SSD driver.															*/
+/************************************************************************************/
+
+/************************************************************************************/
+/* -------------------------------> Guard Section <---------------------------------*/
+/************************************************************************************/
 
 #ifndef SSD_PRIVATE_H_
 #define SSD_PRIVATE_H_
 
+/************************************************************************************/
+
+/* Macro definition for Seven segment type, common cathode or common anode			*/
+
 #define SSD_COMMON_ANODE  		1
 #define SSD_COMMON_CATHODE  	0
 
+/* Macro definition for number of segments in display whether 7, 9, or 13 			*/
+
 #define SSD_NUMBER_OF_SEGMENTS 	(u8)7
+
+/* Number of pins depends on number of segments used, plus one more pin for enable  */
+
 #define SSD_NUMBER_OF_PINS 		(u8)8
 
+/* Maximum digit to be displayed by signle seven segment							*/
+
 #define SSD_MAX_DIGIT_FOR_SSD   (u8)9
+
+/* Maximum number index is supposed to be 10, to start with 0 and end with 9		*/
+
 #define SSD_MAX_NUMBER			(u8)10
 
 u8 SSD_Au8SEG_PATTERN_CATHODE[SSD_MAX_NUMBER][SSD_NUMBER_OF_SEGMENTS] =
@@ -48,19 +70,25 @@ u8 SSD_Au8SEG_PATTERN_ANODE[SSD_MAX_NUMBER][SSD_NUMBER_OF_SEGMENTS] =
 };
 
 
-/*Macros for identifying the init flag*/
+/*Macros for identifying the init flag												*/
+
 #define SSD_u8_SSD_INIT_FLAG_ZERO (u8)0
 #define SSD_u8_SSD_INIT_FLAG_ONE  (u8)1
 
 
-/*Macro for identifying the SetOff flag*/
+/*Macro for identifying the SetOff flag												*/
+
 #define SSD_u8_SSD_SET_OFF_FLAG_OFF (u8)0
 #define SSD_u8_SSD_SET_OFF_FLAG_ON  (u8)1
 
-/*Macro for identifying the init value of the last digit on each connected SSD*/
+/*Macro for identifying the init value of the last digit on each connected SSD		*/
+
 #define SSD_u8_SSD_LAST_DIG_INIT_VAL (u8)0
 
-/*Macro for the for loop starting from 0*/
+/*Macro for the for loop starting from 0											*/
+
 #define SSD_u8_INIT_ITER (u8)0
+
+/************************************************************************************/
 
 #endif /* SSD_PRIVATE_H_ */

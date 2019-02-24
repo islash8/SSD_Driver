@@ -1,9 +1,17 @@
-/*
- * SSD_Prog.c
- *
- *  Created on: Feb 9, 2019
- *      Author: islash8
- */
+/************************************************************************************/
+/* Author  : Islam A.                                                               */
+/* Date    : 08 FEB 2019                                                            */
+/* Version : V03                                                                    */
+/************************************************************************************/
+/* Description                                                                      */
+/* ------------                                                                     */
+/*  This source file is used for the implementation DIO driver, provides a layer of */
+/*  abstraction of the hardware of MCU (ATmega32) itself.                           */
+/************************************************************************************/
+
+/************************************************************************************/
+/* -------------------------------> Header files  <---------------------------------*/
+/************************************************************************************/
 
 #include "STD_Types.h"
 
@@ -14,20 +22,22 @@
 #include "SSD_Config.h"
 
 
-
+/************************************************************************************/
+/* -------------------------------> Global var	  <---------------------------------*/
+/************************************************************************************/
 
 u8 SSD_Au8INIT_FLAG[SSD_NO_OF_SSDs] =  {SSD_u8_SSD_INIT_FLAG_ZERO, SSD_u8_SSD_INIT_FLAG_ZERO};
 u8 SSD_u8LastDigit[SSD_NO_OF_SSDs]  =  {SSD_u8_SSD_LAST_DIG_INIT_VAL, SSD_u8_SSD_LAST_DIG_INIT_VAL};
 u8 SSD_u8OffFlag[SSD_NO_OF_SSDs]    =  {SSD_u8_SSD_SET_OFF_FLAG_OFF, SSD_u8_SSD_SET_OFF_FLAG_OFF};
 
 
-/*
- * Description: Function to set pins of a SSD to display a certain digit on it
- * Inputs: the SSD number according to the number of SSD specified in the configuration file
- * 		   and the digit needed to be displayed
- * output: the Error state of the function
-*/
-
+/************************************************************************************/
+/* Name: 1. SSD_u8SetValue										     	            */
+/* Description: Setting value on Seven segment dispaly								*/
+/* Inputs:  -> copy_SSD_ModuleNum (module number of seven segment display)			*/
+/* 			-> copy_SSD_ModuleValue (the value wanted to be displayed on seven seg.)*/
+/* Outputs: -> local_u8ErrorStatus (error flag to return type of error)	   			*/
+/************************************************************************************/
 
 u8 SSD_u8SetValue(u8 copy_SSD_ModuleNum, u8 copy_SSD_ModuleValue)
 {
@@ -74,6 +84,12 @@ u8 SSD_u8SetValue(u8 copy_SSD_ModuleNum, u8 copy_SSD_ModuleValue)
 	return Local_u8Error;
 }
 
+/************************************************************************************/
+/* Name: 2. SSD_u8SetOn											     	            */
+/* Description: Turning on seven segement display									*/
+/* Inputs:  -> copy_u8SSDNum (module number of seven segment display)				*/
+/* Outputs: -> local_u8ErrorStatus (error flag to return type of error)	   			*/
+/************************************************************************************/
 
 u8 SSD_u8SetOn(u8 copy_u8SSDNum)
 {
@@ -136,8 +152,14 @@ u8 SSD_u8SetOn(u8 copy_u8SSDNum)
 		return Local_u8Error;
 }
 
+/************************************************************************************/
+/* Name: 3. SSD_u8SetOff										     	            */
+/* Description: Turning off seven segement display									*/
+/* Inputs:  -> copy_u8SSDNum (module number of seven segment display)				*/
+/* Outputs: -> local_u8ErrorStatus (error flag to return type of error)	   			*/
+/************************************************************************************/
 
-u8 SSD_u8_SetOff (u8 Copy_u8SsdNb)
+u8 SSD_u8SetOff(u8 Copy_u8SsdNb)
 {
 	/*Local Variable holding the error state*/
 	u8 Local_u8Error;

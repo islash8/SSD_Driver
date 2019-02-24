@@ -18,52 +18,37 @@
 
 void main (void)
 {
+	DIO_vInit();
 
 
+	SSD_u8SetOn(0);
+	SSD_u8SetOn(1);
+	SSD_u8SetOn(2);
 	while(1)
 	{
-		/*SSD_u8SetValue(0, SSD_u8_NUMBER_ZERO);
-		Lib_vDelayMs(500);
-		SSD_u8SetValue(0, SSD_u8_OFF);
-		Lib_vDelayMs(500);
-		SSD_u8SetValue(0, SSD_u8_NUMBER_ONE);
-		Lib_vDelayMs(500);
-		SSD_u8SetValue(0, SSD_u8_OFF);
-		Lib_vDelayMs(500);
-		SSD_u8SetValue(0, SSD_u8_NUMBER_TWO);
-		Lib_vDelayMs(500);
-		SSD_u8SetValue(0, SSD_u8_OFF);
-		Lib_vDelayMs(500);
-		SSD_u8SetValue(0, SSD_u8_NUMBER_THREE);
-		Lib_vDelayMs(500);
-		SSD_u8SetValue(0, SSD_u8_OFF);
-		Lib_vDelayMs(500);
-		SSD_u8SetValue(0, SSD_u8_NUMBER_FOUR);
-		Lib_vDelayMs(500);
-		SSD_u8SetValue(0, SSD_u8_OFF);
-		Lib_vDelayMs(500);
-		SSD_u8SetValue(0, SSD_u8_NUMBER_FIVE);
-		Lib_vDelayMs(500);
-		SSD_u8SetValue(0, SSD_u8_OFF);
-		Lib_vDelayMs(500);
-		SSD_u8SetValue(0, SSD_u8_NUMBER_SIX);
-		Lib_vDelayMs(500);
-		SSD_u8SetValue(0, SSD_u8_OFF);
-		Lib_vDelayMs(500);
-		SSD_u8SetValue(0, SSD_u8_NUMBER_SEVEN);
-		Lib_vDelayMs(500);
-		SSD_u8SetValue(0, SSD_u8_OFF);
-		Lib_vDelayMs(500);
-		SSD_u8SetValue(0, SSD_u8_NUMBER_EIGHT);
-		Lib_vDelayMs(500);
-		SSD_u8SetValue(0, SSD_u8_OFF);
-		Lib_vDelayMs(500);
-		SSD_u8SetValue(0, SSD_u8_NUMBER_NINE);
-		Lib_vDelayMs(500);
-		SSD_u8SetValue(0, SSD_u8_OFF);
-		Lib_vDelayMs(500);*/
 
-		DIO_u8SetPinValue(DIO_PIN24, DIO_PIN_HIGH);
+		for(u8 k=1; k < 10; k++)
+		{
+		for(u8 j=1; j < 10; j++)
+		{
+
+			for(u8 i=0; i < 10; i++)
+			{
+				SSD_u8SetValue(0, i);
+				Lib_vDelayMs(10);
+			}
+			SSD_u8SetValue(1, j);
+			Lib_vDelayMs(10);
+
+		}
+		SSD_u8SetValue(2, k);
+		Lib_vDelayMs(10);
+		}
+
+
+
+
+
 	}
 
 
